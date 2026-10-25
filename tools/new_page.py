@@ -3,7 +3,8 @@
 Why: SafeShare sits behind Cloudflare, which blocks Classroom's link-preview
 crawler, so the attachment card shows "Just a moment..." instead of the video
 title. A page on GitHub Pages carries the real title and thumbnail (Open Graph
-tags) and sends the pupil straight on to SafeShare.
+tags) and links the pupil on to SafeShare with one tap (no automatic redirect:
+Classroom renders the page in a real browser and would follow it).
 
 Usage:
     python -I tools/new_page.py <safeshare-url> [--title "Custom title"] [--slug custom-slug]
@@ -14,7 +15,6 @@ Prints the public URL to paste into Classroom.
 
 import argparse
 import html
-import json
 import re
 import sys
 import unicodedata
@@ -65,22 +65,25 @@ PAGE_TEMPLATE = """<!doctype html>
   body {{ margin: 0; min-height: 100vh; display: grid; place-items: center;
          font-family: system-ui, sans-serif; background: #f4f6fb; color: #1d2433; }}
   main {{ text-align: center; padding: 16px; max-width: 640px; }}
-  img {{ width: 100%; border-radius: 12px; }}
-  a.btn {{ display: inline-block; margin-top: 16px; padding: 12px 24px; border-radius: 8px;
+  a.poster {{ position: relative; display: block; }}
+  img {{ width: 100%; border-radius: 12px; display: block; }}
+  .play {{ position: absolute; inset: 0; margin: auto; width: 88px; height: 62px;
+          border-radius: 16px; background: rgba(26, 115, 232, .9); }}
+  .play::after {{ content: ""; position: absolute; left: 36px; top: 17px;
+                 border-style: solid; border-width: 14px 0 14px 24px;
+                 border-color: transparent transparent transparent #fff; }}
+  a.btn {{ display: inline-block; margin-top: 8px; padding: 12px 24px; border-radius: 8px;
           background: #1a73e8; color: #fff; text-decoration: none; font-weight: 600; }}
 </style>
 </head>
 <body>
 <main>
-  <img src="{image}" alt="">
+  <!-- No automatic redirect: Classroom renders the page in a real browser and
+       would follow it to SafeShare (Cloudflare challenge). The pupil taps instead. -->
+  <a class="poster" href="{target}"><img src="{image}" alt=""><span class="play"></span></a>
   <h1>{title}</h1>
-  <a class="btn" href="{target}">Guarda il video</a>
+  <a class="btn" href="{target}">&#9654; Guarda il video</a>
 </main>
-<script>
-  // Send the pupil straight to the video. JavaScript (not a meta refresh) so that
-  // Classroom's crawler, which does not run scripts, stays here and reads the title.
-  location.replace({target_js});
-</script>
 </body>
 </html>
 """
@@ -147,7 +150,6 @@ def main():
         image=html.escape(image or ""),
         self_url=self_url,
         target=html.escape(target),
-        target_js=json.dumps(target),
     ), encoding="utf-8")
     rebuild_index()
 

@@ -4,8 +4,10 @@ Bridge pages on GitHub Pages for SafeShare videos shared in Google Classroom.
 SafeShare is behind Cloudflare, which blocks Classroom's link-preview crawler:
 a SafeShare link shows up as "Just a moment..." with the Cloudflare challenge as
 thumbnail. Each page here carries the real title + thumbnail (Open Graph tags)
-and forwards the pupil to SafeShare via JavaScript (no meta refresh, so the
-crawler stays on the page and reads the tags).
+and a poster + button linking to SafeShare. **No automatic redirect**: Classroom
+renders link previews in a real browser (the card thumbnail is a screenshot), so
+it follows any JS/meta redirect and lands on the Cloudflare challenge again —
+tested 2026-10-25, JS redirect failed.
 
 Language note: `dev/` subproject — code, comments and docs in English, except
 `README.md` (Italian, for the user). Conversation stays Italian.
@@ -33,8 +35,8 @@ tools/new_page.py     generator: SafeShare URL -> docs/<slug>/index.html
 
 ## Status
 Set up 2026-10-25. First real test on Classroom pending: check that the card
-shows title and thumbnail, and that Classroom's fetcher does not follow the JS
-redirect. Support request to SafeShare (whitelist Google's fetcher) emailed the same
+shows title and thumbnail (2nd attempt, without redirect; 1st attempt with a JS
+redirect failed). Classroom may cache previews per URL: re-test with `?v=N`. Support request to SafeShare (whitelist Google's fetcher) emailed the same
 day to contact@safeshare.tv (address hidden by Cloudflare email obfuscation on
 safeshare.tv/contact; the web form has a Turnstile captcha) — if they fix it,
 this project becomes unnecessary.
