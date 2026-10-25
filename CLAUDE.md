@@ -34,9 +34,10 @@ tools/new_page.py     generator: SafeShare URL -> docs/<slug>/index.html
 - `github` → `https://github.com/teacheratwork/video-classroom.git` (public, Pages)
 
 ## Status
-Set up 2026-10-25. First real test on Classroom pending: check that the card
-shows title and thumbnail (2nd attempt, without redirect; 1st attempt with a JS
-redirect failed). Classroom may cache previews per URL: re-test with `?v=N`. Support request to SafeShare (whitelist Google's fetcher) emailed the same
+Set up and working since 2026-10-25: the Classroom card shows title and
+thumbnail (2nd attempt, without redirect; the 1st, with a JS redirect, failed).
+Classroom caches previews per URL: after changing a published page, re-test with
+`?v=N`. Support request to SafeShare (whitelist Google's fetcher) emailed the same
 day to contact@safeshare.tv (address hidden by Cloudflare email obfuscation on
 safeshare.tv/contact; the web form has a Turnstile captcha) — if they fix it,
 this project becomes unnecessary.
