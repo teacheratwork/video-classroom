@@ -34,5 +34,7 @@ tools/new_page.py     generator: SafeShare URL -> docs/<slug>/index.html
 ## Status
 Set up 2026-10-25. First real test on Classroom pending: check that the card
 shows title and thumbnail, and that Classroom's fetcher does not follow the JS
-redirect. Support request to SafeShare (whitelist Google's fetcher) sent the same
-day via their web form — if they fix it, this project becomes unnecessary.
+redirect. Support request to SafeShare (whitelist Google's fetcher) emailed the same
+day to contact@safeshare.tv (address hidden by Cloudflare email obfuscation on
+safeshare.tv/contact; the web form has a Turnstile captcha) — if they fix it,
+this project becomes unnecessary.
